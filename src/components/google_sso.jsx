@@ -1,43 +1,33 @@
 import React, { Component } from "react";
 import GoogleLogin from 'react-google-login';
 
-class GoogleSso extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clientIdGoogle: "1061265429801-7uus4h7875pjo27adq3oh9m23lhh0kpe.apps.googleusercontent.com",
-      key: ''
-    };
+const GoogleSso = (props) => {
+
+  const clientIdGoogle = "1061265429801-7uus4h7875pjo27adq3oh9m23lhh0kpe.apps.googleusercontent.com";
+  const key = props.key;
 
 
-    this.onKeyChange = this.onKeyChange.bind(this);
-  }
+  const onInputChange = props.onKeyChange
 
-  onKeyChange(value) {
-    this.setState({ key: value });
-  }
 
-  responseGoogle = (response) => {
+  const responseGoogle = (response) => {
     console.log(response);
     console.log(response.profileObj);
-    this.onKeyChange(response.profileObj.googleId)
-    console.log(this.state.key)
+    onInputChange(response.profileObj.googleId)
   }
 
-  render() {
-    return (
-      <div>
-        <GoogleLogin
-          clientId={ this.state.clientIdGoogle }
-          buttonText="Login"
-          onSuccess={ this.responseGoogle }
-          onFailure={ this.responseGoogle }
-          cookiePolicy={ 'single_host_origin' }
-          // isSignedIn={true}
-        />
-      </div>
-    );
-  };
+  return (
+    <div>
+      <GoogleLogin
+        clientId={ clientIdGoogle }
+        buttonText="Login"
+        onSuccess={ responseGoogle }
+        onFailure={ responseGoogle }
+        cookiePolicy={ 'single_host_origin' }
+        // isSignedIn={true}
+      />
+    </div>
+  );
 };
 
 export default GoogleSso;

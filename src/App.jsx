@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import YoutubeSearch from 'youtube-api-search';
 import GoogleSso from './components/google_sso';
 import SearchBar from './components/search_bar';
-import VideoDetails from './components/video_detail';
 import VideoList from './components/video_list';
+import VideoDetails from './components/video_detail';
 import './styles/global.scss';
 
 const API_KEY = "AIzaSyAhfUHei8j0yU3gc2LczW3cXNcrEr9oBqM"
@@ -14,14 +14,18 @@ class App extends Component {
 
     this.state = {
       videos: [],
-      selectedVideo: null
+      selectedVideo: null,
+      key:''
     }
 
-    this.videoSearch('marvel')
+    this.existKey = this.existKey.bind(this)
   }
 
-  videoSearch(term) {
-    YoutubeSearch({ key: API_KEY, term: term }, (data) => {
+  videoSearch(searchTerm) {
+    YoutubeSearch({
+      key: API_KEY,
+      term: searchTerm
+    }, (data) => {
       this.setState({
         videos: data,
         selectedVideo: data[0]
@@ -29,17 +33,36 @@ class App extends Component {
     })
   }
 
+  existKey = () => {
+    return localStorage.getItem('key') ?? this.setState({ key: localStorage.getItem('key') })
+  }
+
+
+
   render() {
-    return (
-      <div>
-        <GoogleSso />
-        <SearchBar onSearchTermChange={ searchTerm => this.videoSearch(searchTerm) } />
-        <VideoDetails video={ this.state.selectedVideo } />
-        <VideoList
-          onVideoSelect={ userSelected => this.setState({ selectedVideo: userSelected }) }
-          videos={ this.state.videos } />
-      </div>
-    );
+    return !localStorage.getItem('key') && !this.state.key
+      ? (
+        <div>
+          <GoogleSso
+            key={this.state.key}
+            onKeyChange={ value => {
+              localStorage.setItem('key', value)
+              this.setState({ key: value })
+            }}
+          />
+        </div>
+      )
+      : (
+        <div>
+          <SearchBar
+            onSearchTermChange={ searchTerm => this.videoSearch(searchTerm) }
+          />
+          <VideoDetails video={ this.state.selectedVideo } />
+          <VideoList
+            onVideoSelect={ userSelected => this.setState({ selectedVideo: userSelected }) }
+            videos={ this.state.videos } />
+        </div>
+      );
   };
 };
 

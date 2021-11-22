@@ -4,6 +4,7 @@ const VideoListItem = (props) => {
   const video = props.video;
   const imageUrl = video.snippet.thumbnails.default.url;
   const titleVideo = video.snippet.title;
+  const onUserSelected =  props.onUserSelected
 
   return (
     <li
@@ -12,7 +13,7 @@ const VideoListItem = (props) => {
     >
       <div className="video-list media">
 
-        <div className="media-left">
+        <div className="media-left video-item">
           <img src={ imageUrl } alt={ titleVideo } />
         </div>
 
