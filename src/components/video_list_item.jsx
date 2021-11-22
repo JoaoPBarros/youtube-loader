@@ -6,7 +6,10 @@ const VideoListItem = (props) => {
   const titleVideo = video.snippet.title;
 
   return (
-    <li className="list-group-item">
+    <li
+      className="list-group-item"
+      onClick={ () => onUserSelected(video) }
+    >
       <div className="video-list media">
 
         <div className="media-left">

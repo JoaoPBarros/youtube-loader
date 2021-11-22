@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import YoutubeSearch from 'youtube-api-search';
 import GoogleSso from './components/google_sso';
 import SearchBar from './components/search_bar';
+import VideoDetails from './components/video_detail';
 import VideoList from './components/video_list';
 import './styles/global.scss';
 
@@ -12,14 +13,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-      videos: []
+      videos: [],
+      selectedVideo: null
     }
+
+    this.videoSearch('marvel')
   }
 
   videoSearch(term) {
     YoutubeSearch({ key: API_KEY, term: term }, (data) => {
       this.setState({
-        videos: data
+        videos: data,
+        selectedVideo: data[0]
       })
     })
   }
@@ -28,8 +33,11 @@ class App extends Component {
     return (
       <div>
         <GoogleSso />
-        <SearchBar />
-        {/* <VideoList videos={this.state.videos} /> */}
+        <SearchBar onSearchTermChange={ searchTerm => this.videoSearch(searchTerm) } />
+        <VideoDetails video={ this.state.selectedVideo } />
+        <VideoList
+          onVideoSelect={ userSelected => this.setState({ selectedVideo: userSelected }) }
+          videos={ this.state.videos } />
       </div>
     );
   };
