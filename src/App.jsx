@@ -6,7 +6,7 @@ import VideoList from './components/video_list';
 import VideoDetails from './components/video_detail';
 import './styles/global.scss';
 
-const API_KEY = "AIzaSyAhfUHei8j0yU3gc2LczW3cXNcrEr9oBqM"
+const API_KEY = "AIzaSyDjy6pGGGa1FfBTWL0PAgXtuzLFi6qX3ww"
 
 class App extends Component {
   constructor(props) {
